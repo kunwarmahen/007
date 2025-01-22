@@ -29,5 +29,7 @@ python main.py [plan|tool|interactive|blog]
 **Additional Configuration for Weather Tool**  
 To fetch weather details using the tool, provide your OpenWeatherMap API key. Register for an API key at [OpenWeatherMap](https://openweathermap.org/api) and add it to the `current_weather` function in the code.
 
-**Reference**
+---
+
+*Reference*  
 Inspired tools implementation by [SwirlAI 's blog](https://www.newsletter.swirlai.com/p/building-ai-agents-from-scratch-part)
