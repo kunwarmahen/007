@@ -50,7 +50,7 @@ def current_weather(city_name: str, country_name: str) -> Dict:
         url = "http://api.openweathermap.org/data/2.5/weather"
         params = {
             "q": city_name + "," + country_name,
-            "appid": "3fcdbdc8c0ceaffec031aebe6bdad062",
+            "appid": "<Provide Your ID>", #TODO Provide your ID
             "units": "metric"  # Use 'imperial' for Fahrenheit
         }
 
@@ -80,11 +80,23 @@ def country_for_city(city_name: str) -> str:
        - Name of the Country where the city is
     """
     try:
-        # print(city_name)
-        return "US"
+        url = "https://countriesnow.space/api/v0.1/countries/population/cities"
+        params = {
+            "city": f"{city_name}",
+        }
+        headers = {'Content-Type': 'application/json'}
+        response = requests.post(url, headers=headers, data=json.dumps(params))
+        response.raise_for_status()  # Raise an HTTPError for bad responses
+        city_data = response.json()
+        print(city_data)
+        if city_data.get("error") == True:
+            return "USA"
+        else:
+            return city_data.get("data").get("country")
         
     except Exception as e:
-        return f"Error get country for city: {str(e)}"
+        print( f"Error get country for city: {str(e)}")
+        return "USA"
     
 @tool()    
 def get_current_location() -> str:
@@ -94,7 +106,7 @@ def get_current_location() -> str:
        - Name of the City and Country for current location
     """
     try:
-        return "Cary, US"
+        return "Port Blair, IN"
         
     except Exception as e:
         return f"Error getting location: {str(e)}"    

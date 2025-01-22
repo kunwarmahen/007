@@ -3,6 +3,8 @@ from dataclasses import dataclass
 from typing import _GenericAlias
 from typing import Callable, Any, Dict, get_type_hints, Optional
 
+global_tool_registry = {}
+
 @dataclass
 class Tool:
     name: str
@@ -61,10 +63,13 @@ def tool(name: str = None):
                 "description": param_docs.get(param_name, "No description available")
             }
         
-        return Tool(
+        tool =  Tool(
             name=tool_name,
             description=description.split('\n\n')[0],
             func=func,
             arguments=params
         )
+        global_tool_registry[func.__name__] = tool
+        return tool
+    
     return decorator
