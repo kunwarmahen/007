@@ -1,5 +1,6 @@
 import json
 from typing import Dict
+from util.time_exe import time_execution
 from llm.base.llmclient import BaseLLMClient
 from llm.base.llmclient import ChatClient
 
@@ -28,7 +29,8 @@ class BlogConclusionAgent:
             return json.loads( json_response['message']['content'])
         except json.JSONDecodeError:
             raise ValueError("Failed to parse LLM response as JSON")
-        
+
+    @time_execution        
     def execute(self, user_query: str) -> str:
         """Execute the full pipeline: plan and execute tools, chaining responses."""
         try:

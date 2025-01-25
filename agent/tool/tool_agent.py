@@ -1,5 +1,6 @@
 import json
 from typing import Dict, List, Any
+from util.time_exe import time_execution
 from agent.tool.tool_registry import Tool, global_tool_registry
 from llm.base.llmclient import BaseLLMClient
 from llm.base.llmclient import ChatClient
@@ -70,6 +71,7 @@ class ToolAgent:
             print(json_response['message']['content'])
             raise ValueError("Failed to parse LLM response as JSON")        
    
+    @time_execution   
     def execute(self, user_query: str) -> str:
         """Execute the full pipeline: plan and execute tools, chaining responses."""
         try:

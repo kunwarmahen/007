@@ -15,10 +15,8 @@ def main(test_agent=None):
         
         for query in query_list:
             print(f"\nUser Query: {query}")
-            start_time = time.time()
             response = agent.execute(query)
-            end_time = time.time()            
-            print(f"Response from the Agent after {end_time - start_time} secs: \n\n{response}")
+            print(f"\nResponse from the Agent: \n\n{response}")
 
     elif test_agent == "tool":
         
@@ -33,10 +31,8 @@ def main(test_agent=None):
         
         for query in query_list:
             print(f"\nUser Query: {query}")
-            start_time = time.time()
             response = agent.execute(query)
-            end_time = time.time()
-            print(f"Response from the Agent after {end_time - start_time} secs: \n\n{response}")
+            print(f"\nResponse from the Agent: \n\n{response}")
 
     elif test_agent == "plan":
 
@@ -46,10 +42,8 @@ def main(test_agent=None):
         
         for query in query_list:
             print(f"\nUser Query: {query}")
-            start_time = time.time()
             response = agent.execute(query)
-            end_time = time.time()
-            print(f"Response from the Agent after {end_time - start_time} secs: \n\n{response}")
+            print(f"\nResponse from the Agent: \n\n{response}")
 
     elif test_agent == "interactive":
         agent = InteractiveAgent(model="qwen2.5:32b")
@@ -59,10 +53,9 @@ def main(test_agent=None):
         
         for query in query_list:
             print(f"\nUser Query: {query}")
-            start_time = time.time()
             response = agent.execute(query)
-            end_time = time.time()
-            print(f"Response from the Agent after {end_time - start_time} secs: \n\n{response}")
+            print(f"\nResponse from the Agent: \n\n{response}")
+                
     else:
 
         agent = GenericAgent(model="qwen2.5:32b")
@@ -71,10 +64,8 @@ def main(test_agent=None):
         
         for query in query_list:
             print(f"\nUser Query: {query}")
-            start_time = time.time()
             response = agent.execute(query)
-            end_time = time.time()
-            print(f"Response from the Agent after {end_time - start_time} secs: \n\n{response}")
+            print(f"\nResponse from the Agent: \n\n{response}")
 
 if __name__ == "__main__":
     

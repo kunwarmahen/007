@@ -1,6 +1,7 @@
 import json
 from typing import Dict
-import util.utils as utils
+from util.time_exe import time_execution
+from util.utils import invoke_agent
 from llm.base.llmclient import BaseLLMClient
 from llm.base.llmclient import ChatClient
 
@@ -28,7 +29,7 @@ class PlannerAgent:
         except json.JSONDecodeError:
             raise ValueError("Failed to parse LLM response as JSON")
             
-   
+    @time_execution   
     def execute(self, user_query: str) -> str:
         """Execute the full pipeline: plan and execute tools, chaining responses."""
        
@@ -50,13 +51,13 @@ class PlannerAgent:
                     agent_args = selected_agent["sequence_order"]
                     
                     # Execute the agent with its arguments
-                    return utils.invoke_agent(str(agent_name), "execute", user_query, agent_args)
+                    return invoke_agent(str(agent_name), "execute", user_query, agent_args)
 
                 elif "agent" in selected_agent:
                     agent_name = selected_agent["agent"]
                     
                     # Execute the agent with its arguments
-                    return utils.invoke_agent(str(agent_name), "execute", user_query)                    
+                    return invoke_agent(str(agent_name), "execute", user_query)                    
             
         except Exception as e:
             print(f'Exception in {PlannerAgent.__name__}: {str(e)}')

@@ -1,4 +1,5 @@
 import json
+from util.time_exe import time_execution
 from agent.blog.blog_planner_agent import BlogPlannerAgent
 from agent.blog.blog_main_body_section_agent import BlogMainBodySectionAgent
 from agent.blog.blog_intro_agent import BlogIntroAgent
@@ -14,7 +15,7 @@ class BlogAgent:
         self.temperature = temperature
         self.stream = stream    
 
-        
+    @time_execution        
     def execute(self, user_query: str, *args) -> str:
         """Execute the full pipeline: plan and execute tools, chaining responses."""
         try:
