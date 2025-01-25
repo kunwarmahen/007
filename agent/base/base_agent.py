@@ -25,5 +25,6 @@ class BaseAgent:
         try:
             return json.loads(json_response['message']['content'])
         except json.JSONDecodeError:
+            print(json_response['message']['content'])
             raise ValueError("Failed to parse LLM response as JSON")
                 

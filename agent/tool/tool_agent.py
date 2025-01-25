@@ -1,16 +1,13 @@
 import json
 from typing import Dict, List, Any
 from util.time_exe import time_execution
+from agent.base.base_agent import BaseAgent
 from agent.tool.tool_registry import Tool, global_tool_registry
-from llm.base.llmclient import BaseLLMClient
-from llm.base.llmclient import ChatClient
 
-class ToolAgent:
-    def __init__(self, base_url="http://localhost:11434", model="qwen2.5:32b", temperature=0.0, stream=False, process_multi_tool = True, load_default_tools = True):
-        
-        """Initialize Agent with a base url and model name and tool registry."""
-        self.llamaclient = BaseLLMClient(base_url=base_url, model=model, temperature=temperature, stream=stream, system_prompt_func=self.create_system_prompt)
-        self.client = ChatClient(self.llamaclient)
+class ToolAgent(BaseAgent):
+    def __init__(self, base_url="http://localhost:11434", model="qwen2.5:32b", temperature=0.0, stream=False, process_multi_tool = True, load_default_tools = True):    
+        """Initialize the agent."""
+        super().__init__(base_url, model, temperature, stream, system_prompt_func=self.create_system_prompt)
         self.process_multi_tool = process_multi_tool
         self.tools: Dict[str, Tool] = {}
 
@@ -37,26 +34,7 @@ class ToolAgent:
             raise ValueError(f"Tool '{tool_name}' not found. Available tools: {list(self.tools.keys())}")
         
         tool = self.tools[tool_name]
-        return tool.func(**kwargs)
-        
-    def call_llm(self, user_query: str) -> Dict:
-        """Use LLM to create a plan for tool usage."""
-        
-        messages = [
-            {"role": "user", "content": user_query}
-        ]
-        
-        # Chat with the API
-        response = self.client.chat(messages)        
-                
-        # Prepare the request to Ollama        
-        json_response = response.json()
-        
-        try:
-            return json.loads(json_response['message']['content'])
-        except json.JSONDecodeError:
-            print(json_response['message']['content'])
-            raise ValueError("Failed to parse LLM response as JSON")
+        return tool.func(**kwargs)        
         
     def subsequent_llm_call(self, messages) -> Dict:
         """Use LLM to create a plan for tool usage."""        
