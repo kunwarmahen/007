@@ -9,13 +9,15 @@ class BaseAgent:
         self.llamaclient = BaseLLMClient(base_url=base_url, model=model, temperature=temperature, stream=stream, system_prompt_func=system_prompt_func)
         self.client = ChatClient(self.llamaclient)
 
-    def call_llm(self, user_query: str) -> Dict:
+    def call_llm(self, messages: str | list[Dict[str, str]]) -> Dict:
         """Use LLM to generate a response."""
 
-        messages = [
-            {"role": "user", "content": user_query}
-        ]
-        
+        if isinstance(messages, str):
+            messages = [{"role": "user", "content": messages}]
+        elif not isinstance(messages, list):
+            raise TypeError("Expected `messages` to be a string or a list of dictionaries.")
+
+
         # Chat with the API
         response = self.client.chat(messages)        
                 

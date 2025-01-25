@@ -36,18 +36,6 @@ class ToolAgent(BaseAgent):
         tool = self.tools[tool_name]
         return tool.func(**kwargs)        
         
-    def subsequent_llm_call(self, messages) -> Dict:
-        """Use LLM to create a plan for tool usage."""        
-        # Chat with the API
-        response = self.client.chat(messages)        
-        # Prepare the request to Ollama        
-        json_response = response.json()
-        
-        try:
-            return json.loads(json_response['message']['content'])
-        except json.JSONDecodeError:
-            print(json_response['message']['content'])
-            raise ValueError("Failed to parse LLM response as JSON")        
    
     @time_execution   
     def execute(self, user_query: str) -> str:
@@ -89,7 +77,7 @@ class ToolAgent(BaseAgent):
                         ]
             
                         # Re-plan using the updated input
-                        plan = self.subsequent_llm_call(messages)
+                        plan = self.call_llm(messages)
                         break;
                    
                      # If multiple tool calls are not required, return the response from tool
